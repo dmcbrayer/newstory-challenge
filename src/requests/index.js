@@ -1,4 +1,4 @@
-import { setUser } from '../actions'
+import { setUser, receiveRecipients } from '../actions'
 
 export const signInUser = (email, password) => {
   let graphRequest = `
@@ -15,16 +15,38 @@ export const signInUser = (email, password) => {
   `
 
   return dispatch => {
-    return postData({query: graphRequest})
+    return postData(null, {query: graphRequest})
             .then(data => {
               console.log(JSON.stringify(data))
-              dispatch(setUser({...data.data.signInUser.viewer, token: data.data.signInUser.token}))
+              let user = data.data.signInUser
+              dispatch(setUser({...user.viewer, token: user.token}))
             })
             .catch(error => console.error(error))
   }
 }
 
-function postData(data = {}) {
+export const getRecipients = (authToken) => {
+  let graphRequest = `
+    query {
+      recipients {
+        uuid
+        name
+        submissionUuids
+      }
+    }
+  `
+
+  return dispatch => {
+    return postData(authToken, { query: graphRequest })
+            .then(data => {
+              console.log(JSON.stringify(data))
+              dispatch(receiveRecipients(data.data.recipients))
+            })
+            .catch(error => console.error(error))
+  }
+}
+
+function postData(token = null, data = {}) {
   const url = "https://api-dev.newstory.io/graphql"
   const apiKey = "de1e8635d05db17456028e6153650041"
 
@@ -33,9 +55,12 @@ function postData(data = {}) {
       headers: {
         'Content-Type': 'application/json',
         'X-Api-Key': apiKey,
-        'ACCEPT': 'application/json'
+        'ACCEPT': 'application/json',
+        'Authorization': token
       },
       body: JSON.stringify(data), // body data type must match "Content-Type" header
     })
     .then(response => response.json()); // parses JSON response into native Javascript objects
 }
+
+
