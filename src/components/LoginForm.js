@@ -6,7 +6,7 @@ let LoginForm = ({ dispatch }) => {
   let username, password
 
   return (
-    <div>
+    <div className="mt-4">
       <form onSubmit={e => {
         e.preventDefault()
         console.log("username:", username.value)
@@ -14,9 +14,15 @@ let LoginForm = ({ dispatch }) => {
 
         dispatch(signInUser(username.value, password.value))
       }}>
-        <input ref={node => username = node} type="text" />
-        <input ref={node => password = node} type="password" />
-        <button type="submit">Submit</button>
+        <div className="form-group">
+          <label>Email</label>
+          <input ref={node => username = node} type="text" className="form-control" />
+        </div>
+        <div className="form-group">
+          <label>Password</label>
+          <input ref={node => password = node} type="password" className="form-control" />
+        </div>
+        <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     </div>
   )

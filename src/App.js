@@ -8,7 +8,7 @@ const store = configureStore();
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
+      <div className="App container">
         <LoginForm />
       </div>
     </Provider>
