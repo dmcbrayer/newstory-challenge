@@ -1,6 +1,6 @@
 import * as constants from '../constants'
 
-const init = {}
+const init = { token: null }
 
 export const user = (state = init, action) => {
   switch(action.type) {

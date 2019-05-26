@@ -1,18 +1,13 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { signInUser } from '../requests/index'
 
-let LoginForm = ({ dispatch }) => {
+let LoginForm = ({onSubmit}) => {
   let username, password
 
   return (
     <div className="mt-4">
       <form onSubmit={e => {
         e.preventDefault()
-        console.log("username:", username.value)
-        console.log("password:", password.value)
-
-        dispatch(signInUser(username.value, password.value))
+        onSubmit(username.value, password.value)
       }}>
         <div className="form-group">
           <label>Email</label>
@@ -27,7 +22,5 @@ let LoginForm = ({ dispatch }) => {
     </div>
   )
 }
-
-LoginForm = connect()(LoginForm)
 
 export default LoginForm
